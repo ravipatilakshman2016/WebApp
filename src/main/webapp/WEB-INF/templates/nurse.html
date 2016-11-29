@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+<head>
+<title>Nurse</title>
+<script>
+	$(function() {
+		var bookingId='';
+		var data='';
+	
+		var myBookingsTableDiv = $('#myBookingsTableDiv').DataTable();
+		
+
+		$('#savebtn').click(function() {
+			
+			var array =
+			{ 
+                "bookingId":bookingId,
+                  "vitals":[
+                            {
+                                "property":"bp",
+                                 "value":$('#bp').val()
+                           },
+                          {
+                               "property":"height",
+                                "value":$('#height').val(),
+                           },
+                           {
+                               "property":"weight",
+                                "value":$('#weight').val(),
+                           },
+                           {
+                               "property":"temp",
+                                "value":$('#temp').val(),
+                           }
+                           
+
+                    ]
+            }
+		
+			    alert(array)
+			var vitalsjson =  JSON.stringify(array);
+	
+			$.ajax({
+				headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+										type : "POST",
+									url : "api/vitals",
+										data :vitalsjson						,
+										 contentType: "application/json; charset=utf-8",
+										success : function(result) {
+											console.log(result);
+
+											if (result.status == "OK") {
+												$('#output').empty();
+												$('#output')
+														.append(
+																"<h2>Booking Completed Successfully...</h2>");
+
+											}
+										}
+									});
+						});
+
+		$('#getBookings')
+				.click(
+						function() {
+
+							$
+									.ajax({
+										url : "api/bookings/myBookings",
+										data : {},
+										success : function(result) {
+											console.log(result);
+											if (result.status == "OK") {
+												myBookingsTableDiv.clear()
+														.draw();
+												$
+														.each(
+																result.bookings,
+																function(index,
+																		item) {
+
+																	var date = new Date(
+																			item.slotTime);
+																	var time = date
+																			.toLocaleString();
+																	var link = '<a id="vitalsview" onclick="viewReports()">View</a>';
+																	myBookingsTableDiv.row
+																			.add(
+																					[
+																					 		item.slotId,
+																							time,
+																							item.user.name,
+																							item.user.username,
+																							item.doctor.name,
+																							item.doctor.speciality,
+																							link ])
+																			.draw(
+																					false);
+
+																}); // End $.each
+
+											}
+										}
+
+									});
+
+						});
+		$('#myBookingsTableDiv tbody').on( 'click', 'tr', function () {
+			
+			var row = $(this).find('td');
+	
+		    console.log("Specific cell content: " + $(row[0]).text());
+	bookingId=$(row[0]).text();
+		  
+		 
+		} );
+		
+
+	});
+</script>
+<script>
+function viewReports()
+{
+	
+	$("#displayRportsDiv").show();
+}
+	$(function() {
+		$("#datetimepicker").datepicker({
+			dateFormat : "yy-mm-dd",
+			minDate : 0
+		});
+
+	});
+</script>
+
+<script>
+	$(function() {
+		$('.contentDiv').hide();
+		//$('#addDocDiv').show();
+	
+		$('.contentSelection').click(function() {
+			$('.contentDiv').hide();
+			
+			$('#' + $(this).attr('id') + 'Div').show();
+		});
+
+		$('#doctorsubmit').click(function() {
+			console.log($('#startTime').val());
+			/* var isoDate = new Date($('#startTime').val()).toISOString();
+			console.log('isoDate = ' + isoDate);
+			 */
+
+			name = $('#name').val();
+			mobile = $('#mobile').val();
+			startTime = $('#startTime').val();
+			endTime = $('#endTime').val();
+			speciality = $('#speciality').val();
+			//alert(name + mobile + startTime + endTime + speciality);
+			$.ajax({
+
+				type : "POST",
+				url : "content/addDoctor",
+				data : {
+					"name" : name,
+					"mobile" : mobile,
+					"startTime" : startTime + ":00Z",
+					"endTime" : endTime + ":00Z",
+					"speciality" : speciality,
+					"duration" : "15"
+
+				},
+				success : function(result) {
+					console.log(result);
+					if (result.status == "OK") {
+						
+						$('#displayAreaDiv').empty();
+						$('#displayAreaDiv').append("Insertion completed");
+
+					}
+				}
+			});
+			document.getElementById("name").value = "";
+			document.getElementById("speciality").value = "";
+			document.getElementById("mobile").value = "";
+
+		});
+	$('#getBookings').click();
+	});
+	
+	
+</script>
+</head>
+<body>
+<br/>
+	<section layout:fragment="content">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="btn-group-vertical">
+					<button id="getBookings" type="button"
+						class="btn btn-primary contentSelection">View Doctor Bookings</button>
+					
+				</div>
+			</div>
+		
+			
+			<div id="getBookingsDiv" class="contentDiv col-md-10">
+				<div id="displayBookingArea">
+					<table class="table table-hover " id="myBookingsTableDiv">
+						<thead>
+							<tr><th class="tablestyle" id="idslot">Slot Id</th><th class="tablestyle">Slot Time</th><th class="tablestyle">User Name</th><th class="tablestyle">User Mobile</th><th class="tablestyle">Doctor Name</th><th class="tablestyle">Speciality</th>
+							<th class="tablestyle">Action</th>
+							</tr>
+							
+						</thead>
+						<tbody>
+    							
+    						</tbody>
+					</table>
+				</div>
+				<div class="row contentDiv" id="displayRportsDiv">
+					<div class="col-md-12" align="center">
+					<div class="col-sm-2">
+					</div>
+					<div class="col-sm-9">
+					<h3>Add Vitals</h3>
+					<table style="width:360px;">
+						<tr>
+							<td>Temp</td>
+							<td>	
+								<input id="temp" type="text" class="form-control" ></input>
+									
+							</td>
+						</tr>
+						<tr>
+							<td>Weight</td>
+							<td>	
+								<input id="weight" type="text" class="form-control" ></input>
+							</td>
+						</tr>
+						<tr>
+							<td>BP</td>
+							<td>	
+								<input id="bp"  type="text" class="form-control" ></input>
+							</td>
+						</tr>
+						<tr>
+							<td>Height</td>
+							<td>	
+								<input id="height" type="text" class="form-control" ></input>
+							</td>
+						</tr>
+					</table>
+					<div class="clearfix">&nbsp;&nbsp;</div>
+					<div class="text-center">
+						<button id="savebtn" type="button" class="btn btn-default">Save</button>
+					</div>
+					</div>
+					</div>
+					</div>
+			</div>
+			
+		</div>
+		<div class="col-sm-10" align="center">
+					<label id="displayAreaDiv"></label>
+				</div>
+
+	</section>
+</body>
+</html>

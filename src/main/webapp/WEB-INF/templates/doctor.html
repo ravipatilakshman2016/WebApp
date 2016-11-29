@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+<head>
+<title>Recp</title>
+<script>
+	$(function() {
+		$('.contentDiv').hide();
+		//$('#addSlotDiv').show();
+		$("#displayRportsDiv").hide();
+		$('.contentSelection').click(function() {
+			$('.contentDiv').hide();
+			$("#displayRportsDiv").hide();
+			$('#' + $(this).attr('id') + 'Div').show();
+		});
+
+		$.ajax({
+
+			url : "api/getdoctors",
+			data : {
+
+			},
+			success : function(result) {
+				console.log(result);
+				if (result.status == "OK") {
+					$('#doctorId').find('option').remove();
+
+					$.each(result.doctors, function(index, doctor) {
+						console.log(doctor);
+						$('#doctorId').append($('<option></option>', {
+							value : doctor.id + "," + doctor.name,
+							text : doctor.id + "-" + doctor.name
+						}));
+						//$('#slotsDropdown').append('<option></option>').val(slot);
+					});
+
+				}
+			}
+		});
+
+	});
+</script>
+<script type="text/javascript">
+	$(function(){
+		var myBookingsTableDiv = $('#myBookingsTableDiv').DataTable();
+		$("#displayRportsDiv").hide();
+		$('#addBooking').click(function(){
+				
+			$.ajax({
+				url: "api/bookings/myBookings",
+				data : {},
+				success: function(result){
+					
+					if (result.status == "OK") {
+						myBookingsTableDiv.clear().draw();
+						$.each(result.bookings,function(index,item) {
+							
+							var date = new Date(item.slotTime);
+							var time = date.toLocaleString();
+							var link = '<a onclick="viewReports()">View</a>';
+							myBookingsTableDiv.row.add([item.user.name,item.user.username,time,link]).draw( false );
+							
+							}); // End $.each
+						
+						}
+				}
+				
+				
+			});
+			
+		});	
+		$('#addBooking').click();
+	});
+	function viewReports()
+	{
+		
+		$("#displayRportsDiv").show();
+	}
+</script>
+
+</head>
+<body><br/>
+	<section layout:fragment="content">
+	<br/>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="btn-group-vertical">
+					<button id="addBooking" type="button"
+						class="btn btn-primary contentSelection">My Bookings</button>
+					<button id="addSlot" type="button"
+						class="btn btn-primary contentSelection">Add Slots</button>
+				</div>
+			</div>
+			
+			<!-- 	Add Slot Div started -->
+			<div id="addSlotDiv" class="contentDiv">
+				<div id="signupbox" class="mainbox col-md-6 col-sm-8 ">
+					<div class="panel panel-info">
+						<div class="panel-heading">
+							<div class="panel-title">Booking</div>
+						</div>
+						<div class="panel-body">
+							<div id="signupform" class="form-horizontal">
+								<div class="form-group">
+									<label for="doctorId" class="col-md-3 control-label">Doctor
+										Id</label>
+									<div class="col-md-9">
+										<select id="doctorId"></select>
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<label for="startTime" class="col-md-3 control-label">Start
+										Time</label>
+									<div class="col-md-9">
+										<input id="startTime" type="text" class="form-control"
+											required="required" placeholder="startTime" />
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="endTime" class="col-md-3 control-label">End
+										Time</label>
+									<div class="col-md-9">
+										<input id="endTime" type="text" class="form-control"
+											required="required" placeholder="end time" />
+									</div>
+								</div>
+
+
+								<div class="form-group">
+									<!-- Button -->
+									<div class="col-sm-12 controls" align="center">
+										<button id="submitbtn" class="btn btn-success">
+											<i class="glyphicon glyphicon-send"></i>Add
+										</button>
+
+									</div>
+									<div id="result" align="center"
+										style="background-color: silver; border-bottom-color: green;"></div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		
+			<div id="addBookingDiv" class="contentDiv">
+				<div class="col-md-9">
+					<table class="table table-hover " id="myBookingsTableDiv">
+						<thead>
+							<tr>
+								<th class="tablestyle">UserName</th><th class="tablestyle">UserMobile</th><th class="tablestyle">Slot Time</th>
+								<th class="tablestyle">View</th>
+							</tr>
+						</thead>
+						<tbody>
+										
+						</tbody>
+					</table>
+					</div>
+					<div class="row" id="displayRportsDiv">
+					<div class="col-md-12" align="center">
+					<div class="col-sm-2">
+					</div>
+					<div class="col-sm-9">
+					<table style="width:361px;">
+						<tr>
+							<td>Vitals</td>
+							<td>	
+								<textarea class="form-control" rows="2">
+									
+								</textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Doctor Review</td>
+							<td>	
+								<textarea class="form-control" rows="2">
+									
+								</textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Diagnostics Review</td>
+							<td>	
+								<textarea class="form-control" rows="2">
+									
+								</textarea>
+							</td>
+						</tr>
+						<tr>
+							<td>Medical Prescription</td>
+							<td>	
+								<textarea class="form-control" rows="2">
+									
+								</textarea>
+							</td>
+						</tr>
+					</table>
+					<div class="clearfix">&nbsp;&nbsp;</div>
+					<div class="text-center">
+						<button type="button" class="btn btn-default">Save</button>
+					</div>
+					</div>
+					</div>
+					</div>
+					</div>
+				</div>
+			</div>
+	</section>
+</body>
+</html>

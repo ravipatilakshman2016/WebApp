@@ -1,0 +1,219 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+
+<head>
+	<title>Clinic Booking</title>
+
+<script>
+	$(document).ready(function() {
+		var speciality = 'not set';
+		var location = 'not set';
+		var doctorId = '';
+		var slotId='';
+		
+		var date = new Date();
+		console.log(speciality);
+		
+
+		$('#submitbtn').click(function(){
+			
+			$.ajax({
+				url : "api/bookings/slotBooking",
+				data : {
+					"slotId" : $('#slotsDropdown').val().split(",")[0],
+					"slotTime" : $('#slotsDropdown').val().split(",")[1],
+					"name" : $('#name').val(),
+					"mobile" : $('#mobile').val()
+				},
+				success : function(result) {
+					console.log(result);
+
+					if (result.status == "OK") {
+						
+							$('#output').empty();$('#output').show();
+							$('#output').append("<h4>Booking Completed Successfully</h4>");
+						
+
+					}
+				}
+		});//submittn Ajax End
+        $("#datetimepicker").change();
+        
+		});
+		
+		$("#datetimepicker").change(function() {
+					date = $('#datetimepicker').val();
+					doctorId = $('#doctorDropdown').val();
+					$('#form').show();
+					$('#output').empty();
+					$('#slotsDropdown').find('option').remove();
+					$.ajax({
+						url : "api/slotsByDate",
+						data : {
+							"doctorId" : doctorId,
+							"date" : date
+						},
+						success : function(result) {
+							console.log(result);
+
+							if (result.status == "OK") {
+
+								$('#slotsDropdown').find('option').remove();
+								$('#slotdisplayArea').html('');
+								/* 
+								console.log("Slots");
+								console.log(result.slotModel);
+								console.log("Booked Slots");
+								console.log(result.bookedSlots);
+								var diff = $(result.slotModel.slots).not(result.slotModel.bookedSlots).get();
+								console.log("Diff");
+								console.log(diff);  */
+							
+									
+								$.each(result.slotModel, function(index, slot) {
+									console.log(slot);
+									$('#slotsDropdown').append($('<option></option>', { 
+								       value: slot.id+","+slot.time,
+								       text : slot.time
+								   }));
+								
+								});
+							
+								$('#slotbookingArea').show();
+
+							}
+
+						} // End Success : function
+					}); // Get Slots  Ajax End
+				});
+
+		$("#specialityDropdown").change(function() {
+							
+							
+							console.log("In search btn click ");
+							console.log(speciality);
+						speciality = $('#specialityDropdown').val(),
+				
+							$('#output').empty();
+							console.log(speciality);
+							location = "hyderabad";
+							type = "clinic";
+							console.log(location);
+							console.log("sending ajax req");
+
+							$('#doctorDropdown').find('option').remove();
+							$.ajax({
+										url : "api/doctor",
+										data : {
+											"speciality" : speciality,
+											"location" : location,
+											"type" : type
+										},
+										success : function(result) {
+											console.log(result);
+											if (result.status == "OK") {
+												$('#displayArea').html('');
+												$('#displayArea').show();
+												if (result.doctors.length == 0) {
+													$('#displayArea')
+															.append(
+																	'<center><h4 >No Doctors availale  for '
+																			+ speciality
+																			+ ' </h4></center>');
+												}
+												$.each(result.doctors,function(index,item) {
+																
+													$('#doctorDropdown').append($('<option></option>', { 
+													       value: item.id,
+													       text : item.name
+													   }));
+																$('#dateArea').show();	
+																}); // End $.each
+											} // End STatus OK
+												$(".doctor").click(function() {
+												$('#slotsDropdown').find('option').remove();
+												
+												$('#dateArea').show();
+												$('#output').empty();
+                                                date = $('#datetimepicker').datepicker("setDate",new Date());
+                                                $("#datetimepicker").change();
+											})
+										} // End Success : function
+									}); // End Ajax
+							console.log("ajax req sent");
+						});
+					
+	});
+</script>
+<script>
+								$(function() {
+									$("#datetimepicker").datepicker({
+										dateFormat : "yy-mm-dd",
+										minDate: 0
+									});
+
+								});
+							</script>
+</head>
+
+<body >
+	<section layout:fragment="content">
+	<div id="container-top">
+		<div class="container" >
+		
+		<div class="row"><br/>
+			<h3>Clinic Booking</h3><br/><br/>
+		</div>
+		
+		<div class="row">
+			<div class="col-md-3 ">
+					<select id="specialityDropdown" class="col-3-input">
+							 <option >Select Speciality</option>
+							<option value="Gynecologist">Gynecologist</option>
+							<option value="Cardiologist">Cardiologist Checks</option>
+							<option value="Pediatrician">Pediatrician</option>
+							<option value="Ent Surgeon">Ent Surgeon</option>
+					</select><br/><br/>
+			</div>
+			<div class="col-md-3">
+				<select id="doctorDropdown" class="col-3-input">
+				<option >Select Doctor</option>
+				</select><br/><br/>
+			</div>
+			
+			<div class="col-md-3">
+				<div id="dateArea" >
+					<input id="datetimepicker" class="col-3-input" placeholder="Select date" /><br/><br/>
+				</div>
+			</div>
+										
+			<div class="col-md-3">	
+				<div id="slotbookingArea" >
+					<select id="slotsDropdown" class="col-3-input">
+					<option >Select Time</option>
+					</select><br/><br/>
+					<div sec:authorize="!isAnonymous()">
+						<button id="submitbtn" type="submit" class="btn btn-primary btn-md">Submit</button></div>
+				</div>
+			</div>	
+		</div>
+
+		<div class="row">
+			<div class="col-md-6" sec:authorize="isAnonymous()">
+				<div id="form">
+				<input name="name" type="text" id="name" placeholder="Name" class="col-3-input" /><br/><br /> 
+				<input name="mobile" type="text" id="mobile" placeholder="Mobile" class="col-3-input" /><br/><br />
+				<input name="age" type="text" id="age" placeholder="Age" class="col-3-input"/><br/><br/>
+				<button id="submitbtn" type="submit" class="btn btn-primary btn-md">Submit</button>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div id="output"></div>
+			</div>	
+		</div>
+		</div>
+ 		</div>
+	</section>
+</body>
+</html>

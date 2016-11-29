@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+<head>
+<title>Lab</title>
+
+
+<script>
+	$(function() {
+		var testsTable = $('#testsTable').DataTable();
+		var testSubTypesTable = $('#testSubTypesTable').DataTable();
+		var slotsTable = $('#slotsTable').DataTable();
+
+		testsTable.clear().draw();
+		slotsTable.clear().draw();
+		testSubTypesTable.clear().draw();
+		
+		$('.alert .close').on('click', function(e) {
+		    $(this).parent().hide();
+		});
+
+		$('.contentDiv').hide();
+		$('.ajaxLoad').hide();
+		//$('#registerTestTypeAjaxLoad').hide();
+		$('#addTestDiv').show();
+		
+		$('.contentSelection').click(function() {
+			$('.contentDiv').hide();
+			$('#' + $(this).attr('id') + 'Div').show();
+		});
+		
+		$('#testSubTypeHomePickUp-addSubType').change(function(){
+			   $("#testSubTypeMaxHomePickUp-addSubType").prop("disabled", !$(this).is(':checked'));
+		}); 
+		
+		$("#getBookings").click(function(){
+			$.ajax({
+				url : "api/lab/booking",
+				method: "GET",
+				beforeSend: function( xhr ) {
+					$('#getLabBookingsAjaxLoad').show();
+				 }
+			})
+			.done(function(result) {
+				if (result.status == "OK") {
+					slotsTable.clear().draw();
+					$.each(result.results[0], function(index,bking){
+						
+						var date = new Date(bking.slotTime);
+						var time = date.toLocaleString();
+						var link = '<input type="file" name="Upload"></input>';
+						slotsTable.row.add([bking.id, bking.testName, time, bking.receiveMode, bking.user.username, bking.user.mobile,link]).draw( false );
+					});
+					
+				}
+				else{
+					// TODO Display dismissible alert somewhere
+				}
+				console.log(result);
+			})
+			.fail(function() {
+				// TODO Display dismissible alert somewhere
+			})
+			.always(function() {
+				$('#getLabBookingsAjaxLoad').hide();
+			})
+			; // Ajax end
+		}); // getBookings click end
+		
+		$('#addBooking').click(function(){
+		
+			
+			$('#output2').empty();
+			
+			
+			$.ajax({
+
+				url : "api/lab/type",
+				data : {
+
+				},
+				success : function(result) {
+					console.log(result);
+					if (result.status == "OK") { 
+						$('#labTypeDropdown').find('option').remove();
+						$('#labTypeDropdown').append($('<option></option>', { 
+						       
+						       text :" ---Select Test---"
+						   }));
+					
+						$.each(result.results, function(index, item) {
+							
+							$('#labTypeDropdown').append($('<option></option>', { 
+							       value: item.id,
+							       text : item.name
+							   }));
+						  
+						});//each loop end
+
+					}//ok end
+					$("#labTypeDropdown").change(function(){
+						
+						$('#output2').empty();
+						
+						
+						
+						var id=$("#labTypeDropdown").val();
+						var url="api/lab/subType/"+id;
+						$
+								.ajax({
+									url : url,
+									data : {
+
+									},
+									success : function(
+											result) {
+										console
+												.log(result);
+										if (result.status == "OK") {
+
+											
+											$('#labSubTypeDroddown').find('option').remove();
+											$.each(result.results,function(
+																	index,
+																	item) {
+												$('#labSubTypeDroddown').append($('<option></option>', { 
+												       value: item.id,
+												       text : item.name
+												   }));
+															}); // End $.each
+										} // End STatus OK
+
+
+		$('#labSubTypeDiv')	.change(function() {
+		$('#dateArea2').show();
+		});
+															}
+
+								});
+			
+					});
+				}//Success End
+			});
+		});
+		
+		$('#datetimepicker2').change(
+				function() {
+					var date2 = $('#datetimepicker2').val();
+					$('#form2').show();
+					$('#output2').empty();
+					$('#slotsDropdown2').find('option').remove();
+					
+					var id=$('#labSubTypeDroddown').val();;
+			
+					$.ajax({
+						url : "api/lab/slots",
+						data : {
+							subTypeId :id ,
+							date : date2
+						},
+						success : function(result) {
+							console.log(result);
+							if (result.status == "OK") {
+														$('#slotsDropdown2').find('option').remove();
+								$('#slotdisplayArea2').html('');
+								$('#slotdisplayArea2').show();
+							
+								$.each(result.results, function(index, slot) {
+									$.each(slot.availableSlots, function(index, item) {
+									console.log(item);
+									$('#slotsDropdown2').append(
+											$('<option></option>', {
+												value : item.id,
+												text : item.slotTime
+											}));
+
+									});
+									});
+								$('#slotbookingArea2').show();// End $.each
+							} // End STatus OK
+
+						}
+
+					});
+
+				});
+		
+		$("#addTest").click(function(){
+			$('#addTestsubmit-errorDiv').hide();
+			$('#addTestsubmit-error').text("");
+			$.ajax({
+				url : "api/lab/type",
+				method: "GET",
+				beforeSend: function( xhr ) {
+				    // TODO Display ajax loading spinner some where
+				 }
+			})
+			.done(function(result) {
+				
+				if (result.status == "OK") {
+					testsTable.clear().draw();
+					$.each(result.results, function(index,type){
+						testsTable.row.add([type.id, type.name]).draw( false );
+					});
+					
+				}
+				else{
+					// TODO Display dismissible alert somewhere
+				}
+				console.log(result);
+			})
+			.fail(function() {
+				// TODO Display dismissible alert somewhere
+			})
+			.always(function() {
+				// TODO Hide ajax loading spinner some where
+			})
+			;
+		}); // addTest click end
+		
+		
+		$("#addTestSubType").click(function(){
+			$('#addTestSubTypesubmit-errorDiv').hide();
+			$('#addTestSubTypesubmit-error').text("");
+			$("#testSubTypeMaxHomePickUp-addSubType").prop("disabled", true);
+			$('#testSubTypeHomePickUp-addSubType').attr('checked', false);
+			
+			
+			$.ajax({
+				url : "api/lab/type",
+				method: "GET",
+				beforeSend: function( xhr ) {
+				    // TODO Display ajax loading spinner some where
+				 }
+			})
+			.done(function(result) {
+				
+				if (result.status == "OK") {
+					
+					$('#testType-addSubType').find('option').remove();
+					$.each(result.results, function(index,type){
+						
+						$('#testType-addSubType').append(
+							$('<option></option>', {
+								value : type.id,
+								text : type.name
+							})
+						);
+					});
+					
+				}
+				else{
+					// TODO Display dismissible alert somewhere
+				}
+				console.log(result);
+			})
+			.fail(function() {
+				// TODO Display dismissible alert somewhere
+			})
+			.always(function() {
+				// TODO Hide ajax loading spinner some where
+			})
+			; // Ajax end
+			
+			$.ajax({
+				url : "api/lab/subType",
+				method: "GET",
+				beforeSend: function( xhr ) {
+				    // TODO Display ajax loading spinner some where
+				 }
+			})
+			.done(function(result) {
+				if (result.status == "OK") {
+					testSubTypesTable.clear().draw();
+					$.each(result.results, function(index,type){
+						testSubTypesTable.row.add([type.id, type.name, type.description, type.duration, type.home_pickup,
+						                           type.max_homepickup_bookings, type.max_online_bookings, type.online_booking]).draw( false );
+						console.log(type);
+					});	
+				}
+				else{
+					// TODO Display dismissible alert somewhere
+				}
+				console.log(result);
+			})
+			.fail(function() {
+				// TODO Display dismissible alert somewhere
+			})
+			.always(function() {
+				// TODO Hide ajax loading spinner some where
+			})
+			; // Ajax end
+		}); // addTestSubType click end
+		
+		
+		$('#addTestsubmit').click(function() {
+			$.ajax({
+				url : "api/lab/type",
+				method: "POST",
+				data : {
+					name : $('#testName').val()
+				},
+				beforeSend: function( xhr ) {
+				    //alert("Before Sending");
+					$('#registerTestTypeAjaxLoad').show();
+				 }
+			})
+			.done(function(result) {
+				if (result.status == "OK") {
+					$("#addTestsubmit-errorDiv").removeClass().addClass('alert alert-success');
+					$('#addTestsubmit-error').text("Test Added");
+					$('#addTestsubmit-errorDiv').show();
+					testsTable.clear().draw();
+					$.each(result.results, function(index,type){
+						testsTable.row.add([type.id, type.name]).draw( false );
+					});
+				}
+				else{
+					$("#addTestsubmit-errorDiv").removeClass().addClass('alert alert-danger');
+					$('#addTestsubmit-error').text("Unable to add test. " + result.message);
+					$('#addTestsubmit-errorDiv').show();
+				}
+				//console.log(result);
+			})
+			.fail(function() {
+				$("#addTestsubmit-errorDiv").removeClass().addClass('alert alert-danger');
+				$('#addTestsubmit-error').text("Unable to add test");
+				$('#addTestsubmit-errorDiv').show();
+				alert( "error" );
+			})
+			.always(function() {
+				$('#registerTestTypeAjaxLoad').hide();
+			})
+			; // Ajax End
+		}); // addTestsubmit
+		
+		$('#addTestSubTypesubmit').click(function() {
+			$.ajax({
+				url : "api/lab/subType",
+				method: "POST",
+				data : {
+					typeId : $('#testType-addSubType').val(),
+					name : $('#testSubTypeName-addSubType').val(),
+					description : $('#testSubTypeDescription-addSubType').val(),
+					duration : $('#testSubTypeDuration-addSubType').val(),
+					home_pickup : $('#testSubTypeHomePickUp-addSubType').is(":checked"),
+					max_homepickup_bookings : $('#testSubTypeMaxHomePickUp-addSubType').val() || 0,
+					max_online_bookings : $('#testSubTypeMaxOnline-addSubType').val(),
+					online_booking : $('#testSubTypeOnlineReports-addSubType').is(":checked"), // This should be on line reports. to change on server side
+					startTime : $('#testSubTypeStartTime-addSubType').val(),
+					endTime : $('#testSubTypeEndTime-addSubType').val()
+				},
+				beforeSend: function( xhr ) {
+				    //alert("Before Sending");
+					$('#registerTestSubTypeAjaxLoad').show();
+				 }
+			})
+			.done(function(result) {
+				if (result.status == "OK") {
+					$("#addTestSubTypesubmit-errorDiv").removeClass().addClass('alert alert-success');
+					$('#addTestSubTypesubmit-error').text("Sub Type Added");
+					$('#addTestSubTypesubmit-errorDiv').show();
+					testSubTypesTable.clear().draw();
+					$.each(result.results, function(index,type){
+						testSubTypesTable.row.add([type.id, type.name, type.description, type.duration, type.home_pickup,
+						                           type.max_homepickup_bookings, type.max_online_bookings, type.online_booking]).draw( false );
+						console.log(type);
+					});
+				}
+				else{
+					$("#addTestSubTypesubmit-errorDiv").removeClass().addClass('alert alert-danger');
+					$('#addTestSubTypesubmit-error').text("Unable to add sub type. " + result.message);
+					$('#addTestSubTypesubmit-errorDiv').show();
+				}
+				//console.log(result);
+			})
+			.fail(function() {
+				$("#addTestSubTypesubmit-errorDiv").removeClass().addClass('alert alert-danger');
+				$('#addTestSubTypesubmit-error').text("Unable to add sub type");
+				$('#addTestSubTypesubmit-errorDiv').show();
+				alert( "error" );
+			})
+			.always(function() {
+				$('#registerTestSubTypeAjaxLoad').hide();
+			})
+			; // Ajax End
+		}); // addTestSubTypesubmit End
+
+		$('#addSlot').click(function(){
+			$.ajax({
+				url :"api/lab/type",
+				success: function(result){
+					console.log(result);
+					if (result.status == "OK") {
+
+						$('#typeId').find('option').remove();
+					
+						$.each(result.results, function(index, item) {
+							console.log(item);
+							$('#typeId').append(
+									$('<option></option>', {
+										value : item.id ,
+										text : item.name
+									}));
+
+						});
+						var id=$('#typeId').val();
+						var url="api/lab/subType/"+id;
+						$.ajax({
+							url :url,
+							success : function(
+									result) {
+								console
+										.log(result);
+								if (result.status == "OK") {
+
+									$('#subTypeId').find('option').remove();
+									
+									$.each(result.results,function(
+															index,
+															item) {
+										$('#subTypeId').append(
+												$('<option></option>', {
+													value : item.id ,
+													text : item.name
+												}));
+													}); // End $.each
+								} // End STatus OK
+
+
+													}
+						});
+					
+					} // End STatus OK
+				}
+			});
+			
+		});//Get Type End
+		
+		$('#typeId').change(function(){
+			var id=$('#typeId').val();
+			var url="api/lab/subType/"+id;
+			$.ajax({
+				url :url,
+				success : function(
+						result) {
+					console
+							.log(result);
+					if (result.status == "OK") {
+
+						$('#subTypeId').find('option').remove();
+						
+						$.each(result.results,function(
+												index,
+												item) {
+							$('#subTypeId').append(
+									$('<option></option>', {
+										value : item.id ,
+										text : item.name
+									}));
+										}); // End $.each
+					} // End STatus OK
+
+
+										}
+			});
+		});//Get SubType End
+	$('#slotsubmit').click(function(){
+	
+		$.ajax({
+			type : "POST",
+			url : "api/lab/slots",
+			data :{
+				subTypeId :$('#subTypeId').val(),
+				startTime : $('#slotstartTime').val()+":00Z",
+				endTime :$('#slotendTime').val()+":00Z"
+			},
+			success : function(result) {
+				console.log(result);
+
+				if (result.status == "OK") {
+
+					$('#output2').empty();
+				alert("Slot Added Successfully")
+
+				}
+			}
+		});
+		
+	});//Add Slotsubmit End
+	
+	 $('#submitbtn2').click(function(){
+				
+		$.ajax({
+			type : "POST",
+			url : "api/lab/booking",
+			data :{
+				slotId : $('#slotsDropdown2').val(),
+				address :$('#labbookingaddress').val(),
+				mobile : $('#labbookingmobile').val(),
+				name :$('#labbookingname').val(),
+				source :$('#labbookingsource').val(),
+				receive_mode :$('#recievemode').val()
+			},
+			success : function(result) {
+				console.log(result);
+
+				if (result.status == "OK") {
+
+					$('#output2').empty();
+					$('#output2').show();
+				
+					$('#output2').append(
+							"<h4>Booking Completed Successfully"+"<br/>"+"Slot time:"+result.results[0].slotTime+"<br/>"+"Test:"
+							+result.results[0].testName
+							+"<br/>"+"Recieve Mode:"+result.results[0].receiveMode+"</h4>"
+							
+							);
+
+				}
+			}
+		});
+		
+	}); 
+	
+	$("#datetimepicker2").datepicker({
+		dateFormat : "yy-mm-dd",
+		minDate: 0
+	});
+	
+	//$("#addTest").click();
+	//$("#addTestSubType").click();
+	$("#getBookings").click();
+	
+	
+	});
+</script>
+</head>
+<body>
+	<section layout:fragment="content">
+	<br/>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2">
+				<div class="btn-group-vertical">
+					<button id="getBookings" type="button"  class="btn btn-primary contentSelection">
+						<i id="getLabBookingsAjaxLoad" class="ajaxLoad fa fa-cog fa-spin"></i> View Lab Bookings</button>
+					<button id="addBooking" type="button"
+						class="btn btn-primary contentSelection">Add Lab Booking</button>
+					<button id="addTest" type="button"
+						class="btn btn-primary contentSelection">Add Test</button>
+					<button id="addTestSubType" type="button"
+						class="btn btn-primary contentSelection">Add Test Sub Type</button>
+					<button id="addSlot" type="button"
+						class="btn btn-primary contentSelection">Add Slots</button>
+					
+					
+				</div>
+			</div>
+			<div class="col-md-10">
+				<div id="addTestDiv" class="contentDiv">
+				
+					<div class="row"> 
+						<div  class="mainbox col-md-6  col-sm-8 ">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<div class="panel-title">Enter Test Details</div>
+								</div>
+								<div class="panel-body">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label for="testName" class="col-md-3 control-label">Test Name</label>
+											<div class="col-md-9">
+												<input id="testName" type="text" class="form-control" placeholder="Test Name" />
+												<div id="Testnameerror" class="errorstyle"></div>
+											</div>
+										</div>
+										<div class="form-group">
+											<!-- Button -->
+											<div class="col-sm-12 controls">
+												<button id="addTestsubmit" class="btn btn-success">
+													<i id="registerTestTypeAjaxLoad" class="ajaxLoad fa fa-cog fa-spin"></i> Register
+												</button>
+	
+											</div>
+										</div>
+										<div>
+											<div class="alert" id="addTestsubmit-errorDiv" style="display:none;">
+    											<button type="button" class="close">�</button>
+											    <span id="addTestsubmit-error"></span>
+											</div>
+										</div>
+	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row"> 
+						<table id="testsTable" class="display">
+							<thead>
+        						<tr>
+						            <th>Id</th>
+						            <th>Test Name</th>
+						        </tr>
+    						</thead>
+    						<tbody>
+    							<tr>
+    								<td>Row1-Col1</td>
+    								<td>Row1-Col2</td>
+    							</tr>
+    							<tr>
+    								<td>Row2-Col1</td>
+    								<td>Row2-Col2</td>
+    							</tr>
+    						</tbody>
+						</table>
+					</div>
+
+				</div>
+				
+					<div id="addTestSubTypeDiv" class="contentDiv">
+				
+					<div class="row"> 
+						<div  class="mainbox col-md-6  col-sm-8 ">
+							<div class="panel panel-info">
+								<div class="panel-heading">
+									<div class="panel-title">Enter Test Sub Type Details</div>
+								</div>
+								<div class="panel-body">
+									<div class="form-horizontal">
+										<div class="form-group">
+											<label class="col-md-4 control-label">Test</label>
+											<div class="col-md-8">
+                                                <select id="testType-addSubType"></select>
+											</div>
+										</div>
+                                    
+										<div class="form-group">
+											<label for="testSubTypeName-addSubType" class="col-md-4 control-label">Sub Type</label>
+											<div class="col-md-8">
+												<input id="testSubTypeName-addSubType" type="text" class="form-control" placeholder="Test Sub Type" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="testSubTypeDescription-addSubType" class="col-md-4 control-label">Description</label>
+											<div class="col-md-8">
+												<input id="testSubTypeDescription-addSubType" type="text" class="form-control" placeholder="Description" />
+											</div>
+										</div>
+                                        
+										<div class="form-group">
+											<label for="testSubTypeDuration-addSubType" class="col-md-4 control-label">Duration</label>
+											<div class="col-md-8">
+												<input id="testSubTypeDuration-addSubType" type="text" class="form-control" placeholder="Duration" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="testSubTypeMaxOnline-addSubType" class="col-md-4 control-label">Max Walk ins</label>
+											<div class="col-md-8">
+												<input id="testSubTypeMaxOnline-addSubType" type="text" class="form-control" placeholder="Max Walk ins" />
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-md-4 control-label">Home Pick Up</label>
+											<div class="col-md-8">
+												<div class="input-group">
+											      <span class="input-group-addon">
+											        <input id="testSubTypeHomePickUp-addSubType" type="checkbox" aria-label="..." />
+											      </span>
+											      <input id="testSubTypeMaxHomePickUp-addSubType" type="text" class="form-control" placeholder="Max Bookings" aria-label="..." />
+											    </div><!-- /input-group -->
+    
+												
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="testSubTypeOnlineReports-addSubType" class="col-md-4 control-label">Online Reports</label>
+											<div class="col-md-8">
+												<input id="testSubTypeOnlineReports-addSubType" type="checkbox" class="form-control"  />
+											</div>
+										</div>
+                                        
+                                        
+                                        <div class="form-group">
+                                            <label for="testSubTypeStartTime-addSubType" class="col-md-4 control-label">Start Time</label>
+                                            <div class="col-md-8">
+                                                <input id="testSubTypeStartTime-addSubType" type="datetime-local"
+                                                    class="form-control" required="required"
+                                                    placeholder="startTime" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="testSubTypeEndTime-addSubType" class="col-md-4 control-label">End Time</label>
+                                            <div class="col-md-8">
+                                                <input id="testSubTypeEndTime-addSubType" type="datetime-local"
+                                                    class="form-control" required="required"
+                                                    placeholder="end time" />
+                                            </div>
+                                        </div>
+										<div class="form-group">
+											<!-- Button -->
+											<div class="col-sm-12 controls">
+												<button id="addTestSubTypesubmit" class="btn btn-success">
+													<i id="registerTestSubTypeAjaxLoad" class="ajaxLoad fa fa-cog fa-spin"></i> Add
+												</button>
+	
+											</div>
+										</div>
+										<div>
+											<div class="alert" id="addTestSubTypesubmit-errorDiv" style="display:none;">
+    											<button type="button" class="close">�</button>
+											    <span id="addTestSubTypesubmit-error"></span>
+											</div>
+										</div>
+	
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row"> 
+						<table id="testSubTypesTable" class="display">
+							<thead>
+        						<tr>
+						            <th>Id</th>
+						            <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Duration</th>
+                                    <th>Home PickUp</th>
+                                    <th>Max Home PickUps</th>
+                                    <th>Max Walkins</th>
+                                    <th>Online Reports</th>
+						        </tr>
+    						</thead>
+    						<tbody>
+    							
+    						</tbody>
+						</table>
+					</div>
+
+				</div>
+				<!-- 	Add Slot Div started -->
+				<div id="addSlotDiv" class="contentDiv">
+					<div id="signupbox" class="mainbox col-md-6 col-sm-8 ">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">Enter Slot Details</div>
+							</div>
+							<div class="panel-body">
+								<div id="signupform" class="form-horizontal">
+									<div class="form-group">
+										<label for="typeId" class="col-md-3 control-label">Select Type</label>
+										<div class="col-md-9">
+											<select id="typeId"></select>
+										</div>
+									</div>
+						<div class="form-group">
+										<label for="subTypeId" class="col-md-3 control-label">Select Subtype</label>
+										<div class="col-md-9">
+											<select id="subTypeId"></select>
+										</div>
+									</div>
+
+								   <div class="form-group">
+                                            <label for="slotstartTime" class="col-md-4 control-label">Start Time</label>
+                                            <div class="col-md-8">
+                                                <input id="slotstartTime" type="datetime-local"
+                                                    class="form-control" required="required"
+                                                    placeholder="startTime" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="slotendTime" class="col-md-4 control-label">End Time</label>
+                                            <div class="col-md-8">
+                                                <input id="slotendTime" type="datetime-local"
+                                                    class="form-control" required="required"
+                                                    placeholder="end time" />
+                                            </div>
+                                        </div>
+
+									<div class="form-group">
+										<!-- Button -->
+										<div class="col-sm-12 controls" align="center">
+											<button id="slotsubmit" class="btn btn-success">
+												<i class="glyphicon glyphicon-send"></i>Add
+											</button>
+
+										</div>
+
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			
+				
+				<div id="addBookingDiv" class="contentDiv">
+					<div class="row">
+						<div id="labTypeDiv" class="col-md-6">
+							<select id="labTypeDropdown" class="col-3-recp">
+								<option >Select Test</option>
+							</select><br/><br/>
+						</div>
+						<div id="labSubTypeDiv" class="col-md-6">
+							<select id="labSubTypeDroddown" class="col-3-recp">
+								<option >Select Subtest Type</option>
+							</select> <br/><br/>
+						</div>
+						</div>
+						<div class="row">
+							<div id="dateArea2"  class="col-md-6">
+									<input id="datetimepicker2" placeholder="Preferred Date" class="col-3-recp" /><br/><br/>
+							</div>
+							<div id="slotbookingArea2" class="col-md-6">
+									<select id="slotsDropdown2"  class="col-3-recp">
+											<option >Select Slot</option>
+									</select><br/><br/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6" >
+									<div id="form2" >
+										 <input name="labbookingname" placeholder="Name" type="text" id="labbookingname" class="col-3-recp" /><br/><br/>
+										<input name="labbookingmobile" placeholder="Mobile" type="text" id="labbookingmobile" class="col-3-recp" /><br/><br/>
+										<textarea name="labbookingaddress" placeholder="Address"   id="labbookingaddress" class="col-3-recp"></textarea><br/><br/>
+										<select id="labbookingsource"  class="col-3-recp">
+											<option value="reference">Reference</option>
+											<option value="practo">Practo</option>
+										</select> <br/><br/>
+										<select id="recievemode"  class="col-3-recp">
+											<option value="walkin">Walkin</option>
+											<option value="homepickup">Home Pickup</option>
+										</select> <br/><br/>
+										<button id="submitbtn2" type="submit" class="btn btn-primary btn-md">Submit</button>
+									</div>
+							</div>
+							<div class="col-md-6">
+								<div id="output2" ></div>
+							</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="getBookingsDiv" class="contentDiv col-md-10">
+				<div id="displayBookingArea"></div>
+					<div class="row"> 
+						<table id="slotsTable" class="display">
+							<thead>
+        						<tr>
+						            <th>Id</th>
+						            <th>Test Name</th>
+						            <th>Time</th>
+						            <th>Mode</th>
+						            <th>User</th>
+						            <th>Mobile</th>
+						            <th>Reports</th>
+						        </tr>
+    						</thead>
+    						<tbody>
+    						
+    						</tbody>
+						</table>
+					</div>
+			</div>
+		</div>
+		
+
+		<div id="data"></div>
+</div>
+	</section>
+</body>
+</html>

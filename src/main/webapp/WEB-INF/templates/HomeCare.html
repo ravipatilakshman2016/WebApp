@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+<head>
+<title>Home Care</title>
+</head>
+
+<body>
+	<section layout:fragment="content">
+	<br/><br/><br/>
+	<div class="container animated fadeInUp">
+        <div class="row">
+            
+            
+            <div class="col-md-8">
+                <h3>Home Care</h3>
+                <p>Sometimes, it is not possible to travel to the clinic or hospital due to various reasons. 
+                Our home visit plans are the perfect solution for such situations. We usually recommend our 
+                home visit plans for:</p>
+				<p>Elderly individuals and senior citizen couples who have difficulty moving about</p>
+				<p>Individuals who are immobile and frequently need medical attention for chronic conditions 
+				like diabetes, high blood pressure, arthritis, etc. </p>
+
+				<p>People whose medical condition precludes them from moving anywhere out of their house</p>
+
+				<p>Senior citizens can avail our Home Visits Plans at special discounted rates. </p>
+				<p>Depending on your requirements and the health plan you have subscribed to, our family physicians
+				 can check on your health in the comfort of your home, assess your clinical condition and prescribe 
+				 medicines or extend crucial advice on managing your health. </p>
+
+				<p>If you call us in an emergency, even if you have not subscribed to our health plans, we may be 
+				able to send one of our doctors to your home if he/she is available in your locality. We will do this 
+				only after we have ascertained through a tele-consultation that your condition does not require 
+				immediate hospitalization or emergency room admission. </p>
+
+				<p>For more details call us at <strong>+91 901 499 4199. </strong>
+				Or write to <a class="address" href="mailto:info@astrahealthcare.in">info@astrahealthcare.in</a></p>
+
+
+            </div>
+            <div class="col-md-4">
+                <img class="img-responsive" th:src="@{/resources/img/homecare.jpg}" alt="Home Care" />
+            </div>
+        </div>
+    </div>
+
+	</section>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+
+<head>
+<title>Diagnostics Booking23</title>
+<script type="text/javascript">
+$(function(){
+	
+	$.ajax({
+		url : "api/lab/type",
+		data : {},
+		success : function(result) {
+			console.log(result);
+			if (result.status == "OK") { 
+				$('#labTypeDropdown').find('option').remove();
+				$('#labTypeDropdown').append($('<option></option>', { 
+				       
+				       text :"Select Test"
+				   }));
+			
+				$.each(result.results, function(index, item) {
+					
+					$('#labTypeDropdown').append($('<option></option>', { 
+					       value: item.id,
+					       text : item.name
+					   }));
+				  
+				});//each loop end
+
+						}//ok end
+						
+					}//Success End
+				});//Ajax End
+				
+	$('body').on('click','.subtype',function(){
+	//$('.subtype').click(function() {
+		
+		$('#datetimepicker2').val(getFormatedDate_YYYYMMDD()).change();
+		$('#dateArea2').show();
+				});
+ 	$('#datetimepicker2').change(
+			function() {
+				var date2 = $('#datetimepicker2').val();
+				$('#form2').show();
+				$('#output2').empty();
+				$('#slotsDropdown2').find('option').remove();
+				var id=$('#labSubTypeDroddown').val();;
+		
+				$.ajax({
+					url : "api/lab/slots",
+					data : {
+						subTypeId :id ,
+						date : date2
+					},
+					success : function(result) {
+						console.log(result);
+						if (result.status == "OK") {
+							$('#slotsDropdown2').find('option').remove();
+	$('#slotdisplayArea2').html('');
+	$('#slotdisplayArea2').show();
+
+	$.each(result.results, function(index, slot) {
+		$.each(slot.availableSlots, function(index, item) {
+		console.log(item);
+		$('#slotsDropdown2').append(
+				$('<option></option>', {
+					value : item.id,
+					text : item.slotTime
+				}));
+
+		});
+		});
+	$('#slotbookingArea2').show();// End $.each
+} // End STatus OK
+
+					}
+
+				});
+
+			});
+	/*Lab booking Submitbtn  */
+	$('body').on('click','#submitbtn2',function(){
+	//$('#submitbtn2').click(function(){
+		
+		$.ajax({
+			type : "POST",
+			url : "api/lab/booking",
+			data :{
+				slotId : $('#slotsDropdown2').val(),
+				address :$('#labbookingaddress').val(),
+				mobile : $('#labbookingmobile').val(),
+				name :$('#labbookingname').val(),
+				source :$('#labbookingsource').val(),
+				receive_mode :$('#recievemode').val()
+			},
+			success : function(result) {
+				console.log(result);
+
+				if (result.status == "OK") {
+
+
+					$('#output2').empty();
+					
+					$('#output2').append(
+							"<h4>Booking Completed Successfully"+"<br/>"+"Slot time:"+result.results[0].slotTime+"<br/>"+"Test:"
+							+result.results[0].testName
+							+"<br/>"+"Recieve Mode:"+result.results[0].receiveMode+"</h4>"
+							
+							);
+
+				}
+			}
+		});
+		
+	});
+	
+	$("#labTypeDropdown").change(function(){
+		$('#output2').empty();
+		
+		var id=$(this).attr('value');
+		var url="api/lab/subType/"+id;
+		$
+				.ajax({
+					url : url,
+					data : {
+
+					},
+					success : function(
+							result) {
+								console
+								.log(result);
+						if (result.status == "OK") {
+
+							
+							$('#labSubTypeDroddown').find('option').remove();
+							$.each(result.results,function(
+													index,
+													item) {
+								$('#labSubTypeDroddown').append($('<option></option>', { 
+								       value: item.id,
+								       text : item.name
+								   }));
+											});// End $.each
+						} // End STatus OK
+
+											}
+
+				});
+
+	});
+				
+
+			
+
+	
+				
+});
+
+</script>
+<script>
+	$(function() {
+		$("#datetimepicker2").datepicker({
+			dateFormat : "yy-mm-dd",
+			minDate: 0
+		});
+
+	});
+</script>
+
+</head>
+
+<body>
+	<section layout:fragment="content">
+		<div id="container-top2">
+	
+        <div class="container">
+        	<div class="row">
+				<h3>Diagnostics Booking</h3><br/>
+			</div>
+				<div id="addBookingDiv" class="contentDiv">
+					<div class="row">
+						<div id="labTypeDiv" class="col-md-3">
+						<select id="labTypeDropdown" class="col-3-input">
+							<option >Select Test Type</option>
+						</select><br/><br/>
+						</div>
+						<div id="labSubTypeDiv" class="col-md-3">
+							<select id="labSubTypeDroddown" class="col-3-input">
+								<option >Select Subtype</option>
+							</select><br/><br/>
+						</div>
+						<div id="dateArea2"  class="col-md-3">
+							<input id="datetimepicker2" class="col-3-input" placeholder="Select Date"/><br/><br/>
+						</div>
+						<div class="col-md-3">
+								<div id="slotbookingArea2" >
+									<select id="slotsDropdown2" class="col-3-input">
+										<option >Select Time</option>
+									</select> <br/><br/>
+								</div>
+								<div sec:authorize="!isAnonymous()">
+						<button id="submitbtn2" type="submit" class="btn btn-primary btn-md">Submit</button></div>
+						</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6" sec:authorize="isAnonymous()">
+						<div id="form2" >
+							<input name="labbookingname" type="text" id="labbookingname" placeholder="Name" class="col-3-input" /><br/><br />
+							<input name="labbookingmobile" type="text" id="labbookingmobile" placeholder="Mobile" class="col-3-input" /><br/><br />
+							<textarea name="labbookingaddress"  id="labbookingaddress" placeholder="Address" class="col-3-input" ></textarea><br/><br />
+							<select id="labbookingsource" class="col-3-input">
+								<option >Select Source</option>
+								<option value="reference">Reference</option>
+								<option value="practo">Practo</option>
+							</select> <br/><br />
+							<select id="recievemode" class="col-3-input">
+								<option >Receive Mode</option>
+								<option value="walkin">Walkin</option>
+								<option value="homepickup">Home Pickup</option>
+							</select> <br/><br />
+							<button id="submitbtn2" type="submit" class="btn btn-primary btn-md">Submit</button>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div id="output2" ></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+    </section>
+</body>
+</html>

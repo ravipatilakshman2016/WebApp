@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+<head>
+<title>Contact</title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<!--INNER BANNER-->
+		<div id="inbanner">
+		  <div class="inbannerright"></div>
+		  <div class="inbannercontainer container">
+		    <h1 class="inheading1">Contact Us</h1>
+		    <ol class="breadcrumb">
+		      <li><a href="#">Home</a></li>
+		      <li class="active">Contact</li>
+		    </ol>
+		  </div>
+		</div>
+		<!--CONTENT-->
+		<div class="incontain container">
+			<!--Map-->
+		  	<div id="contactmap" class="map">
+		    	<p>This will be replaced with the Google Map.</p>
+		  	</div>
+ 			<div class="row"> 
+			    <!--Contact Form-->
+			    <div class="col-md-9 col-sm-12">
+			    <p>We always want to hear from you!</p>
+				<p>We really value your feedback. We are young, and we want to get better. We 
+				are ever willing to listen and improve.</p>
+				<p> To give us feedback, call us on <strong>+91 901 499 4199. </strong>
+				Or write to <a class="address" href="mailto:info@astrahealthcare.in">info@astrahealthcare.in</a></p>
+			      <form class="form-horizontal contactform"  method="post">
+			        <div class="form-group row">
+			          <label for="name" class="col-sm-2 control-label"><span class="required">*</span>Name </label>
+			          <div class="col-sm-10">
+			            <input type="text"  class="required" id="name" value="" name="name" />
+			          </div>
+			        </div>
+			        <div class="form-group row">
+			          <label for="email" class="col-sm-2 control-label"><span class="required">*</span>Email </label>
+			          <div class="col-sm-10">
+			            <input type="email"  class="required email" id="email" value="" name="email" />
+			          </div>
+			        </div>
+			        <div class="form-group row">
+			          <label for="phone" class="col-sm-2 control-label">Phone</label>
+			          <div class="col-sm-10">
+			            <input type="input" id="phone" value="" name="phone" />
+			          </div>
+			        </div>
+			        <div class="form-group row">
+			          <label for="message" class="col-sm-2 control-label"><span class="required">*</span>Message</label>
+			          <div class="col-sm-10">
+			            <textarea  class="required"  id="message" name="message"></textarea>
+			          </div>
+			        </div>
+			        <div class="form-group row">
+			          <div class="col-sm-offset-2 col-sm-10">
+			           <button type="submit" id="submit_id" class="btn btn-new">Submit</button>
+						<!-- <input type="submit" id="submit_id" value="Submit" class="btn btn-new" /> -->
+			          </div>
+			        </div>
+			      </form>
+			    </div>
+			    
+			    <!-- Sidebar Start-->
+			    <div class="col-lg-3 col-sm-12 mt40column">
+			      <aside>
+			        <div class="sidewidt contactlinks">
+			          <h3>Astra Healthcare Pvt Ltd </h3>
+			          <p> Opposite Western Plaza<br/>
+			            O.U Colony<br/>
+			            Manikonda<br/>
+			            Hyderabad 500089,Telangana, India <br/>
+			            <br/>
+			            Phone: <br/>
+			            Fax: <br/>
+			            Email: <br/>
+			            Web: <br/>
+			          </p>
+			        </div>
+			      </aside>
+			    </div>
+			    <!-- Sidebar End--> 
+			    
+			  </div>
+		</div>
+		
+
+		
+		
+	</section>
+</body>
+</html>
