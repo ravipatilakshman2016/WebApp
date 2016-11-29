@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+<head>
+<title>Home</title>
+</head>
+<body>
+	<section layout:fragment="content">
+		<div id="banner" class="flexslider">
+		  <ul class="slides">
+		    <li>
+		      <div class="container">
+		        <div class="appoint-box">
+		          <h1 class="heading1"><span>Consult</span><br/>
+		            Expert Doctors</h1>
+		          <div class="appointment-form" sec:authorize="isAnonymous() || hasRole('ROLE_USER')">
+		            <h2><a href="clinic-booking" class=""><img th:src="@{/resources/pxhealth/images/blank.png}" class="phone-icon" alt="" title="" />Doctor Appointment</a></h2>
+		          </div>
+		        </div>
+		      </div>
+		      <img th:src="@{/resources/pxhealth/images/banner-1.jpg}" alt="" title="" />
+	      	</li>
+		    <li>
+		      <div class="container">
+		        <div class="appoint-box">
+		          <h1 class="heading1"><span>Bettering  </span><br/>
+		            the Human Condition.</h1>
+		          <div class="appointment-form" sec:authorize="isAnonymous() || hasRole('ROLE_USER')">
+		            <h2><a href="diagnostics-booking" class=""><img th:src="@{/resources/pxhealth/images/blank.png}" class="phone-icon" alt="" title="" />Book a Test</a></h2>
+		          </div>
+		        </div>
+		      </div>
+		      <img th:src="@{/resources/pxhealth/images/banner-2.jpg}" alt="" title="" />
+		    </li>
+		    <li>
+		      <div class="container">
+		        <div class="appoint-box">
+		          <h1 class="heading1"><span>Second Opinion  </span><br/>
+		           Get expert opinion. Talk to us</h1>
+		          <div class="appointment-form" sec:authorize="isAnonymous() || hasRole('ROLE_USER')">
+		            <h2><a href="SecondOpinion-talk" class=""><img th:src="@{/resources/pxhealth/images/blank.png}" class="phone-icon" alt="" title="" />Make an Appointment</a></h2>
+		          </div>
+		        </div>
+		      </div>
+		     <img th:src="@{/resources/pxhealth/images/banner-3.jpg}" alt="" title="" /> 
+		    </li>
+		  </ul>
+		</div>
+		<div id="hospital-service">
+		  <div class="container">
+		    <div class="row">
+		      <div class="col-md-4 col-sm-4"> <a href="clinic-booking"> <span class="icon-box"><img th:src="@{/resources/pxhealth/images/blank.png}" class="patient-icon" alt="" title="" /></span> <span class="text-box">DOCTOR <br />
+		        Appointment</span> </a> </div>
+		      <div class="col-md-4 col-sm-4"> <a href="diagnostics-booking"> <span class="icon-box"><img th:src="@{/resources/pxhealth/images/blank.png}" class="location-icon" alt="" title="" /></span> <span class="text-box">BOOK<br/> A TEST</span> </a> </div>
+		      <div class="col-md-4 col-sm-4"> <a href="MedicalTourism"> <span class="icon-box"><img th:src="@{/resources/pxhealth/images/blank.png}" class="intern-icon" alt="" title="" /></span> <span class="text-box">INTERNATIONAL PATIENTS</span> </a> </div>
+		    </div>
+		    
+		  </div>
+		  
+		</div>
+		<div id="hospital-service2">
+		  <div class="container">
+		    <div class="row">
+		      <div class="col-md-6 col-sm-4"> <a href="diagnostics-booking"> <span class="icon-box"><img th:src="@{/resources/pxhealth/images/blank.png}" class="heart-icon" alt="" title="" /></span> <span class="text-box"> HEALTH <br />
+		        PACKAGE</span> </a> </div>
+		      <div class="col-md-6 col-sm-4"> <a href="CarporateHealth-booking"> <span class="icon-box"><img th:src="@{/resources/pxhealth/images/blank.png}" class="location-icon" alt="" title="" /></span> <span class="text-box">CORPORATE<br/> HEALTH SOLUTIONS</span> </a> </div>
+		    </div>
+		    
+		  </div>
+		  
+		</div>
+		
+		<div id="facillities">
+		  <div class="container">
+		    <div class="heading2"> <span class="left-strip"><img th:src="@{/resources/pxhealth/images/left-strip.png}" alt="" title="" /></span>
+		      <h2><span class="text">Astra</span> Services &amp; Facilities</h2>
+		      <span class="right-strip"><img th:src="@{/resources/pxhealth/images/right-strip.png}" alt="" title="" /></span>
+		      <div class="border-box">&nbsp;</div>
+		    </div>
+		    <div class="row">
+		      <div class="col-md-4 col-sm-6 fac-box">
+		        <div class="icon-box hover-shadow"><img th:src="@{/resources/pxhealth/images/blank.png}" class="ql-doc-icon" alt="" title="" /></div>
+		        <h3>Qualified Doctors</h3>
+		        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		      </div>
+		      <div class="col-md-4 col-sm-6 fac-box">
+		        <div class="icon-box hover-shadow"><img th:src="@{/resources/pxhealth/images/blank.png}" class="care-icon" alt="" title="" /></div>
+		        <h3>Care with Smile</h3>
+		        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		      </div>
+		      <div class="col-md-4 col-sm-6 fac-box">
+		        <div class="icon-box hover-shadow"><img th:src="@{/resources/pxhealth/images/blank.png}" class="medical-icon" alt="" title="" /></div>
+		        <h3>Medical Counselling</h3>
+		        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		      </div>
+		      <!-- <div class="col-md-4 col-sm-6 fac-box">
+		        <div class="icon-box hover-shadow"><img th:src="@{/resources/pxhealth/images/blank.png}" class="hrs-icon" alt="" title="" /></div>
+		        <h3>24 hours Services</h3>
+		        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		      </div>
+		      <div class="col-md-4 col-sm-6 fac-box">
+		        <div class="icon-box hover-shadow"><img th:src="@{/resources/pxhealth/images/blank.png}" class="medical-icon" alt="" title="" /></div>
+		        <h3>Medical Counselling</h3>
+		        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		      </div>
+		      <div class="col-md-4 col-sm-6 fac-box">
+		        <div class="icon-box hover-shadow"><img th:src="@{/resources/pxhealth/images/blank.png}" class="ambulance-icon" alt="" title="" /></div>
+		        <h3>Ambulance Services</h3>
+		        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		      </div> -->
+		    </div>
+		  </div>
+		</div>
+		<div id="specialists">
+		  <div class="container">
+		    <div class="heading3"> <span class="left-strip"><img th:src="@{/resources/pxhealth/images/left-strip1.png}" alt="" title="" /></span>
+		      <h2><span class="text">Our Doctors</span> - Specialists</h2>
+		      <span class="right-strip"><img th:src="@{/resources/pxhealth/images/right-strip1.png}" alt="" title="" /></span>
+		      <div class="border-box">&nbsp;</div>
+		    </div>
+		    <div class="row">
+		      <div class="col-md-6 col-sm-6 doctors-box">
+		        <div class="doc-img"> <img th:src="@{/resources/pxhealth/images/specialists-thumb.jpg}" alt="" title="" />
+		          <div class="doc-type">Psychologist</div>
+		        </div>
+		        <div class="doc-desc">
+		          <h3>Dr. Alex Smith</h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  and typesetting industry.</p>
+		          <a href="#">More Details</a> </div>
+		      </div>
+		      <div class="col-md-6 col-sm-6 doctors-box">
+		        <div class="doc-img"> <img th:src="@{/resources/pxhealth/images/specialists-thumb.jpg}" alt="" title="" />
+		          <div class="doc-type">Physician</div>
+		        </div>
+		        <div class="doc-desc">
+		          <h3>Dr. Alex Smith</h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  and typesetting industry.</p>
+		          <a href="#">More Details</a> </div>
+		      </div>
+		      <div class="col-md-6 col-sm-6 doctors-box">
+		        <div class="doc-img"> <img th:src="@{/resources/pxhealth/images/specialists-thumb.jpg}" alt="" title="" />
+		          <div class="doc-type">Orthopedic</div>
+		        </div>
+		        <div class="doc-desc">
+		          <h3>Dr. Alex Smith</h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  and typesetting industry.</p>
+		          <a href="#">More Details</a> </div>
+		      </div>
+		      <div class="col-md-6 col-sm-6 doctors-box">
+		        <div class="doc-img"> <img th:src="@{/resources/pxhealth/images/specialists-thumb.jpg}" alt="" title="" />
+		          <div class="doc-type">Dentist</div>
+		        </div>
+		        <div class="doc-desc">
+		          <h3>Dr. Alex Smith</h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.  and typesetting industry.</p>
+		          <a href="#">More Details</a> </div>
+		      </div>
+		      <div class="col-md-12 text-center mt50"> <a href="#" class="orang-btn">View All Doctors</a> </div>
+		    </div>
+		    <img th:src="@{/resources/pxhealth/images/nurse-bg.png}" class="nurse-img" alt="" title="" /> </div>
+		</div>
+		<div id="latest-news">
+		  <div class="container">
+		    <div class="heading2"> <span class="left-strip"><img th:src="@{/resources/pxhealth/images/left-strip.png}" alt="" title="" /></span>
+		      <h2><span class="text">Latest News</span> from Our Medical Center</h2>
+		      <span class="right-strip"><img th:src="@{/resources/pxhealth/images/right-strip.png}" alt="" title="" /></span>
+		      <div class="border-box">&nbsp;</div>
+		    </div>
+		    <div class="crflexslider carousel" id="homeblog">
+		      <ul class="slides">
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb1.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb2.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb3.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb4.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb1.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		        <li>
+		          <div class="news-img">
+		            <div class="date-box"> <span>24</span>July, 2014 </div>
+		            <img th:src="@{/resources/pxhealth/images/news-thumb2.jpg}" alt="" title="" /> </div>
+		          <h3><a href="news.html">Our First Post here...</a></h3>
+		          <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+		          <div class="posted-text">Posted in <a href="#">General</a>, <a href="#">Ortho Clinic</a></div>
+		        </li>
+		      </ul>
+		    </div>
+		  </div>
+		</div>
+		<!-- <div id="testimonials">
+		  <div class="container">
+		    <div class="heading3"> <span class="left-strip"><img th:src="@{/resources/pxhealth/images/left-strip1.png}" alt="" title="" /></span>
+		      <h2>What <span class="text">patients</span> say About Us</h2>
+		      <span class="right-strip"><img th:src="@{/resources/pxhealth/images/right-strip1.png}" alt="" title="" /></span>
+		      <div class="border-box">&nbsp;</div>
+		    </div>
+		    <div class="newflexslider" id="hometestimonial">
+		      <ul class="slides">
+		        <li>
+		          <div class="test-cpart">
+		            <div class="test-user"><span><img th:src="@{/resources/pxhealth/images/patients-thumb.png}" alt="" title="" /></span></div>
+		            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam quis nostrud exerci tation.</p>
+		            <a href="#" class="orang-btn">View All testimonials</a> </div>
+		        </li>
+		        <li>
+		          <div class="test-cpart">
+		            <div class="test-user"><span><img th:src="@{/resources/pxhealth/images/patients-thumb2.png}" alt="" title="" /></span></div>
+		            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam quis nostrud exerci tation.</p>
+		            <a href="#" class="orang-btn">View All testimonials</a> </div>
+		        </li>
+		        <li>
+		          <div class="test-cpart">
+		            <div class="test-user"><span><img th:src="@{/resources/pxhealth/images/patients-thumb.png}" alt="" title="" /></span></div>
+		            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam quis nostrud exerci tation.</p>
+		            <a href="#" class="orang-btn">View All testimonials</a> </div>
+		        </li>
+		      </ul>
+		      <div class="white-box"></div>
+		    </div>
+		  </div>
+		</div>--><footer id="fpart">
+			  <div class="container">
+	    <div class="row fcpart">
+	      <div class="col-md-4">
+	        <h3 class="heading5">About <span>Astra</span></h3>
+	        <div class="ab-textbox">
+	          <p>Astra health, being established in 2015 will rapidly 
+					emerge as one of the most technologically advanced healthcare and
+					diagnostic centers. Head quartered in Hyderabad at Manikonda region
+					and being the urban diagnostics is uniquely placed to become the
+					premier diagnostic centre for doctors and patients</p>
+              <p>Being founded by group of highly qualified entrepreneurial
+					professionals including Doctors with diversified experience and
+					also cross cultural exposure have designed an extraordinary and an
+					ultramodern healthcare destination.</p>
+              
+	        </div>
+            <div class="pull-right">
+                <a href="AboutUs">
+                    <img th:src="@{/resources/Animated Read More/purple.gif}" alt="" title="" />
+                </a>
+            </div>
+	      </div>
+	      <div class="col-md-4">
+	        <h3 class="heading5">Latest <span>Tweet</span></h3>
+	        <div id="twitter"> </div>
+	      </div>
+	      <div class="col-md-4">
+	        <h3 class="heading5">Stay <span>Connected</span></h3>
+	        <div class="address-box">
+	          <!-- <h4 class="heading4">Our Address:</h4> -->
+	          <p>Astra Healthcare Pvt Ltd<br />
+	            Opposite Western Plaza, O.U Colony, Manikonda, Hyderabad 500089, Telangana, India</p>
+
+	          <ul class="stayconnect">
+	            <li><a href="mainlto:reachus@astra.com"><img th:src="@{/resources/pxhealth/images/blank.png}" class="mail-icon" alt="" title="" />reachus@astra.com</a></li>
+	            <li><a href="http://reachctech.com:8080/WebApp" target="_blank"><img th:src="@{/resources/pxhealth/images/blank.png}" class="web-icon" alt="" title="" />http://reachctech.com:8080/WebApp</a></li>
+	            <li><img th:src="@{/resources/pxhealth/images/blank.png}" class="phone-icon" alt="" title="" />91-123-456-7890,  91-40-123-4567</li>
+	          </ul>
+
+              <ul>
+                <a href="Contact" class="pull-right">
+                    <img th:src="@{/resources/Animated Read More/original.gif}" alt="" title="" />
+                </a>
+              </ul>
+	          <ul class="social-box clearfix">
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="fb-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="tweet-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="in-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="gplus-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="skype-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="rss-icon" alt="" title="" /></a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="text-center copyright">Copyright 2016 @  Astra Healthcare</div>
+	  </footer>
+	</section>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Astra</title>
+
+	<!--Google Web Font-->
+	<link href='http://fonts.googleapis.com/css?family=Roboto:400,300,500,700,100' rel='stylesheet' type='text/css' />
+	<!--CSS-->
+	<!-- Bootstrap -->
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/pxhealth/css/bootstrap.min.css}" />
+	<!-- Jquery UI CSS for Calendar -->
+	<link th:href="@{/resources/pxhealth/css/jquery-ui.css}" rel="stylesheet" />
+
+	<!-- Main CSS -->
+	<link rel="stylesheet" type="text/css" th:href="@{/resources/pxhealth/css/style.css}" />
+	<!-- Animation -->
+	<link th:href="@{/resources/pxhealth/css/animate.css}" rel="stylesheet" />
+	<link th:href="@{/resources/pxhealth/css/hover.css}" rel="stylesheet" />
+	<!-- Font Icon -->
+	<!-- Font Icon -->
+	<link th:href="@{/resources/pxhealth/css/font-awesome.min.css}" rel="stylesheet" media="screen" />
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	      <script src="@{/resources/pxhealth/js/html5shiv.js}"></script>
+	      <script src="@{/resources/pxhealth/js/respond.min.js}"></script> 
+	     <![endif]-->
+    <!-- Custom Modernizr -->
+	<script th:src="@{/resources/pxhealth/js/modernizr.custom.js}"></script>
+	
+	<link rel="stylesheet" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css"/>
+	
+    <!--JAVASCRIPTS--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery-1.10.2.js}"></script> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery-migrate.min.js}"></script> 
+	<!-- Datepicker--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery-ui.js}" ></script> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery-ui-timepicker-addon.js}" ></script> 
+	
+	<!-- Bootstrap--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/bootstrap.min.js}" ></script> 
+	<!-- Flex Slider--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.flexslider-min.js}" ></script> 
+	<!-- Colorbox--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.colorbox-min.js}" ></script> 
+	<!-- Latest Tweet--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.tweet.js}"></script> 
+	<!-- jQuery Animation --> 
+	<script th:src="@{/resources/pxhealth/js/inview.js}"></script> 
+	<!-- include jQuery + carouFredSel plugin --> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.carouFredSel-6.2.1-packed.js}"></script> 
+	<!-- optionally include helper plugins  for carouFredSel--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.mousewheel.min.js}"></script> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.touchSwipe.min.js}"></script> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.transit.min.js}"></script> 
+	
+	<!-- parallax --> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.parallax-1.1.3.js}"></script> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.localscroll-1.2.7-min.js}"></script> 
+	<!-- Jquery Validation--> 
+	<script  type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.validate.js}"></script> 
+	<!-- Social --> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/socialstream.jquery.js}"></script> 
+	<!-- Jquery Map --> 
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/jquery.gmap.js}"></script> 
+	<!-- Dcotor's Grid--> 
+	<script th:src="@{/resources/pxhealth/js/grid.js}"></script> 
+	<!--All Functions--> 
+	<script type="text/javascript" th:src="@{/resources/pxhealth/js/custom.js}" ></script>
+    
+    <script type="text/javascript" th:src="@{/resources/custom/utils.js}" ></script>
+	
+
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+
+	<script src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+	
+
+</head>
+<body class="loading">
+
+	<header id="hpart">
+	  <div class="row1">
+	    <div class="container clearfix">
+	      <div class="opening-box">Opening Hours : <span>Monday to Saturday - 9 AM to 9 PM</span></div>
+	      <div class="phone-box">
+            <img th:src="@{/resources/pxhealth/images/blank.png}" class="phone-icon" alt="" title="" />+91 9014994199
+          </div>
+	    </div>
+	  </div>
+           
+	  <div class="row2">
+	    <div class="clearfix container"> 
+	    	<a href="index" class="logo pull-left">
+	    		<!-- <img th:src="@{/resources/pxhealth/images/logo.png}" alt="" title="" /> -->
+	    		<img th:src="@{/resources/img/logo.gif}" alt="" title="" />
+	   		</a>
+	      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+	      <nav id="nav-bar" class="collapse navbar-collapse bs-navbar-collapse pull-right" role="navigation">
+	        <ul class="nav navbar-nav">
+	          <li>
+	          	<a href="index">
+	          		<span>
+	          			<img th:src="@{/resources/pxhealth/images/blank.png}" class="home-icon" alt="" title="" />
+          			</span>Home
+         		</a>
+
+	          </li>
+	          <li><a href="AboutUs"><span><img th:src="@{/resources/pxhealth/images/blank.png}" class="short-icon" alt="" title="" /></span>AboutUs</a></li>
+	          <li class="dropdown">
+                <a href="#"><span><img th:src="@{/resources/pxhealth/images/blank.png}" class="news-icon dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" alt="" title="" /></span>Services<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="clinics">Clinics</a></li>
+                  <li><a href="diagnostics">Diagnositcs</a></li>
+                  <li><a href="pharmacy-booking">Pharmacy</a></li>
+                  <li><a href="HomeCare">Home Care</a></li>
+                  <li><a href="HomeHealth">Home Health</a></li>
+                  <li><a href="MedicalTourism">Medical Tourism</a></li>
+                  <li><a href="CarporateHealth-booking">Corporate Health Packages</a></li>
+                  <li><a href="PreEmploymentChecks">Pre Employment Checks</a></li>
+                  
+                </ul>
+              </li>
+	          <li><a href="PartnerWithUs"><span><img th:src="@{/resources/pxhealth/images/blank.png}" class="doctor-icon" alt="" title="" /></span>Partner With Us</a>
+	          </li>
+	          <li><a href="Career"><span><img th:src="@{/resources/pxhealth/images/blank.png}" class="service-icon" alt="" title="" /></span>Careers</a>
+	          </li>
+	          <li><a href="MedicalTourism"><span><img th:src="@{/resources/pxhealth/images/blank.png}" class="faq-icon" alt="" title="" /></span>Medical-Tourism</a></li>
+	          <li><a sec:authorize="isAnonymous()" href="register-user"><span><img th:src="@{/resources/pxhealth/images/blank.png}" class="appointment-icon" alt="" title="" /></span>Register</a></li>
+	          <li><a href="Contact"><span><img th:src="@{/resources/pxhealth/images/blank.png}" class="contact-icon" alt="" title="" /></span>Contact</a></li>
+	        </ul>
+	      </nav>
+	    </div>
+	  </div>
+	  
+      <div id="rowSecondaryMenu">
+        <div class="container">
+            <div sec:authorize="isAnonymous()">
+                <h5> Welcome Guest</h5>
+            </div>
+            <div sec:authorize="!isAnonymous()" >
+			    <h5><span sec:authentication="name"></span>			
+                <span sec:authorize="!hasRole('ROLE_USER')" sec:authentication="principal.authorities"></span></h5>
+		    </div>
+			
+          <div sec:authorize="hasRole('ROLE_USER')" class="pull-right" ><a class="btn btn-primary" th:href="@{/home-user}">Me</a></div>
+          <div sec:authorize="hasRole('ROLE_ADMIN')" class="pull-right"><a class="btn btn-primary" th:href="@{/admin}">Admin</a></div>
+          <div sec:authorize="hasRole('ROLE_RECP')" class="pull-right"><a class="btn btn-primary" th:href="@{/recp}">Reception</a></div>
+          <div sec:authorize="hasRole('ROLE_LAB')" class="pull-right"><a class="btn btn-primary" th:href="@{/lab}">Lab</a></div>
+          <div sec:authorize="hasRole('ROLE_DOCTOR')" class="pull-right"><a class="btn btn-primary" th:href="@{/doctor}">Doctor</a></div>
+          <div sec:authorize="hasRole('ROLE_NURSE')" class="pull-right"><a class="btn btn-primary" th:href="@{/nurse}">Nurse</a></div>
+          
+          <div class="phone-box pull-right" sec:authorize="isAnonymous()"><a class="btn btn-success btnlogin" href="login">Login</a></div>
+          <div class="phone-box pull-right" sec:authorize="isAuthenticated()">
+            <form method="post" th:action="@{/logout}" role="form">
+				<button type="submit" class="btn btn-primary">Logout</button>
+			</form>
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+	<!-- Wrap all page content here -->
+	<!-- Begin page content -->
+	<section layout:fragment="content">
+		
+	</section>
+
+	<!--FOOTER-->
+<!-- 	<footer id="fpart">
+	  <div class="container">
+	    <div class="row fcpart">
+	      <div class="col-md-4">
+	        <h3 class="heading5">About <span>Astra</span></h3>
+	        <div class="ab-textbox">
+	          <p>Astra health, being established in 2015 will rapidly 
+					emerge as one of the most technologically advanced healthcare and
+					diagnostic centers. Head quartered in Hyderabad at Manikonda region
+					and being the urban diagnostics is uniquely placed to become the
+					premier diagnostic centre for doctors and patients</p>
+              <p>Being founded by group of highly qualified entrepreneurial
+					professionals including Doctors with diversified experience and
+					also cross cultural exposure have designed an extraordinary and an
+					ultramodern healthcare destination.</p>
+              
+	        </div>
+            <div class="pull-right">
+                <a href="AboutUs">
+                    <img th:src="@{/resources/Animated Read More/purple.gif}" alt="" title="" />
+                </a>
+            </div>
+	      </div>
+	      <div class="col-md-4">
+	        <h3 class="heading5">Latest <span>Tweet</span></h3>
+	        <div id="twitter"> </div>
+	      </div>
+	      <div class="col-md-4">
+	        <h3 class="heading5">Stay <span>Connected</span></h3>
+	        <div class="address-box">
+	          <h4 class="heading4">Our Address:</h4>
+	          <p>Astra Healthcare Pvt Ltd<br />
+	            Opposite Western Plaza, O.U Colony, Manikonda, Hyderabad 500089, Telangana, India</p>
+
+	          <ul class="stayconnect">
+	            <li><a href="mainlto:reachus@astra.com"><img th:src="@{/resources/pxhealth/images/blank.png}" class="mail-icon" alt="" title="" />reachus@astra.com</a></li>
+	            <li><a href="http://reachctech.com:8080/WebApp" target="_blank"><img th:src="@{/resources/pxhealth/images/blank.png}" class="web-icon" alt="" title="" />http://reachctech.com:8080/WebApp</a></li>
+	            <li><img th:src="@{/resources/pxhealth/images/blank.png}" class="phone-icon" alt="" title="" />91-123-456-7890,  91-40-123-4567</li>
+	          </ul>
+
+              <ul>
+                <a href="Contact" class="pull-right">
+                    <img th:src="@{/resources/Animated Read More/original.gif}" alt="" title="" />
+                </a>
+              </ul>
+	          <ul class="social-box clearfix">
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="fb-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="tweet-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="in-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="gplus-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="skype-icon" alt="" title="" /></a></li>
+	            <li><a href="#"><img th:src="@{/resources/pxhealth/images/blank.png}" class="rss-icon" alt="" title="" /></a></li>
+	          </ul>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	  <div class="text-center copyright">Copyright 2016 @  Astra Healthcare</div>
+	</footer> -->
+	<a id="gotop"><img th:src="@{/resources/pxhealth/images/gotop.png}"  alt="" title="" /></a> 
+	
+
+</body>
+</html>

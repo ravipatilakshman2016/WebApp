@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout1">
+<head>
+<title>User Home</title>
+<script type="text/javascript">
+	$(function(){		
+		
+		$('#myClinicBookingsDiv').hide();
+		$('#myLabBookingsDiv').hide();
+        
+        $('#myClinicBookingsDiv').show();
+		
+		var myClinicBookingsTableDiv = $('#myClinicBookingsTableDiv').DataTable();
+		var myLabBookingsTableDiv = $('#myLabBookingsTableDiv').DataTable();
+		
+		$('#bookingsbtn').click(function(){
+			$('#myLabBookingsDiv').hide();		
+			$.ajax({
+				url: "api/bookings/myBookings",
+				data : {},
+				success: function(result){
+					
+					if (result.status == "OK") {
+						myClinicBookingsTableDiv.clear().draw();
+						$.each(result.bookings,function(index,item) {
+							var date = new Date(item.slotTime);
+							var date1 = date.toLocaleString(); 
+							myClinicBookingsTableDiv.row.add([date1,item.doctor.name,item.doctor.speciality]).draw( false );
+							
+						}); // End $.each
+						
+						$('#myClinicBookingsDiv').show();
+						
+						}
+				}
+				
+				
+			});
+			
+		});	
+		
+		$('#labbookingsbtn').click(function(){
+			$('#myClinicBookingsDiv').hide();
+			$.ajax({
+				url: "api/lab/booking",
+				data : {},
+				success: function(result){
+					
+					if (result.status == "OK") {
+						myLabBookingsTableDiv.clear().draw();
+						$.each(result.results[0],function(index,item) {
+							console.log("Result is " + item);
+							var date = new Date(item.slotTime);
+							var date1 = date.toLocaleString(); 
+							myLabBookingsTableDiv.row.add([item.id,item.testName,date1,item.receiveMode]).draw( false );
+								}); // End $.each
+						$('#myLabBookingsDiv').show();
+						}
+				}
+				
+				
+			});
+			
+		});	
+	
+	});
+</script>
+</head>
+<body><br/>
+	<section layout:fragment="content">
+        <div class="container">
+            <div class="row" style="padding:10px">
+		<div class="col-md-2 btn-group-vertical">
+		<button id="bookingsbtn" type="button" class="btn btn-primary contentSelection">My Doctor Bookings</button>
+		<button id="labbookingsbtn" type="button"
+						class="btn btn-primary contentSelection">My Lab Bookings</button>
+	 </div>
+	 <div id="myClinicBookingsDiv">
+	 	<div class="col-md-9">
+	 		<table class="table table-hover " id="myClinicBookingsTableDiv">	
+	 			<thead>
+	 				<tr>
+	 					<th class="tablestyle">Slot Time</th><th class="tablestyle">Doctor Name</th><th class="tablestyle">Speciality</th>	
+	 				</tr>
+	 			</thead>
+	 			<tbody>
+	 				
+	 			</tbody>
+	 		</table>
+	 	</div>
+	 </div>			
+	 <div id="myLabBookingsDiv">
+	 	<div class="col-md-9">
+	 		<table class="table table-hover " id="myLabBookingsTableDiv">
+	 			<thead>
+	 				<tr>
+	 					<th class="tablestyle"> Id </th><th class="tablestyle"> Test Name </th><th class="tablestyle">Slot Time</th><th class="tablestyle">Mode</th>
+	 				</tr>
+	 			</thead>
+	 			<tbody>
+	 				
+	 			</tbody>
+	 		</table>
+	 	</div>
+	 </div>
+			
+			</div>
+        </div>
+    </section>
+</body>
+</html>
